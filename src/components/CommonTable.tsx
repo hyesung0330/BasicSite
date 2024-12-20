@@ -1,10 +1,9 @@
 import React, { ReactNode } from 'react';
 import './CommonTable.css';
 
-// Props 타입 정의
 interface CommonTableProps {
-  headersName: string[]; // 헤더 이름
-  children: ReactNode; // 자식 컴포넌트
+  headersName: string[];
+  children: ReactNode;
 }
 
 const CommonTable: React.FC<CommonTableProps> = ({ headersName, children }) => {
@@ -13,9 +12,7 @@ const CommonTable: React.FC<CommonTableProps> = ({ headersName, children }) => {
       <thead>
         <tr>
           {headersName.map((item, index) => (
-            <th className="common-table-header-column" key={index}>
-              {item}
-            </th>
+            <th key={index} className="common-table-header-column">{item}</th>
           ))}
         </tr>
       </thead>

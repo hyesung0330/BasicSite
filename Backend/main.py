@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy.orm import Session
 from model import User  # User 모델 (SQLAlchemy 모델 정의 필요)
+from model import Post
 from database import engine, SessionLocal, Base
 from pydantic import BaseModel ## data 검증과 세팅 관리
 from fastapi.middleware.cors import CORSMiddleware # 브라우저는 사용자 본인이 아닌 코드들을 파싱함. 브라우저에는 인증정보가 저장됨. 
@@ -51,6 +52,10 @@ class LoginRequest(BaseModel):
     username: str
     password: str
 
+class PostCreate(BaseModel):
+    title: str
+    content: str
+
 # 비밀번호 해싱 함수
 def hash_password(password: str):
     return pwd_context.hash(password)
@@ -69,6 +74,8 @@ def create_access_token(data: dict, expires_delta: timedelta = None): # 로그�
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
 
 # 루트 엔드포인트
 @app.get("/")
@@ -99,3 +106,11 @@ def register(user: UserRequest, db: Session = Depends(get_db)):
 # pydantic 으로 요청 데이터를 검증
 # DB에서 사용자 조회
 # 비밀번호 검증 후, 일치 시 토큰 생성. 불일치 시 400에러 반환
+
+@app.post("/posts")
+def create_post(post: PostCreate, db: Session = Depends(get_db)):
+    new_post = Post(title=post.title, content=post.content)
+    db.add(new_post)
+    db.commit()
+    db.refresh(new_post)  # 새로 생성된 데이터 반환
+    return new_post

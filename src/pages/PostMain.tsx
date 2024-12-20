@@ -16,10 +16,15 @@ const PostMain: React.FC = () => {
     navigate('/home');
   };
 
+  const goToWritePage = () => {
+    navigate('/home/postmain/postwrite');
+  };
+
   return (
     <>
       <button type="button" onClick={Backhome}>홈으로</button>
       <h1 style={{ textAlign: 'center' }}>게시글 목록</h1>
+      <button onClick={goToWritePage}>글쓰기</button> {/* 글쓰기 버튼 */}
       <PostList headersName={['글번호', '제목', '등록일', '조회수']} posts={posts} />
     </>
   );

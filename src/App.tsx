@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import PostMain from './pages/PostMain';
+import PostWrite from './pages/PostWrite';
 
 function App() {
     // 토큰 검사: 토큰이 존재하고 비어있지 않은 경우만 로그인 상태로 판단
@@ -23,6 +24,8 @@ function App() {
             <Route path="/home/postmain" element={<PostMain />} />
             {/* 잘못된 경로 접근 시 로그인 페이지로 이동 */}
             <Route path="*" element={<Navigate to="/login" replace />} />
+            <Route path="/home/postwrite" element={<PostWrite />}
+/>
         </Routes>
     );
 }
